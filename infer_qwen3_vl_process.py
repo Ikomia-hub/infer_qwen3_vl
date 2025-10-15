@@ -247,7 +247,7 @@ class InferQwen3VlFactory(dataprocess.CTaskFactory):
         # General type: INFER, TRAIN, DATASET or OTHER
         self.info.algo_type = core.AlgoType.INFER
 
-        Min hardware config
+        # Min hardware config
         self.info.hardware_config.min_cpu = 4
         self.info.hardware_config.min_ram = 16
         self.info.hardware_config.gpu_required = False
