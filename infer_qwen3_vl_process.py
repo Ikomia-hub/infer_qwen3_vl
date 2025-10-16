@@ -229,7 +229,7 @@ class InferQwen3VlFactory(dataprocess.CTaskFactory):
         self.info.license = "Apache 2.0"
 
         # Ikomia API compatibility
-        self.info.min_ikomia_version = "0.13.0"
+        self.info.min_ikomia_version = "0.14.0"
 
         # Python compatibility
         self.info.min_python_version = "3.11.0"
@@ -246,6 +246,7 @@ class InferQwen3VlFactory(dataprocess.CTaskFactory):
 
         # General type: INFER, TRAIN, DATASET or OTHER
         self.info.algo_type = core.AlgoType.INFER
+        self.info.algo_tasks = "VLM"
 
         # Min hardware config
         self.info.hardware_config.min_cpu = 4
