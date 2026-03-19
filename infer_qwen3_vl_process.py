@@ -1,11 +1,14 @@
 import copy
 import os
+
 import torch
 from PIL import Image
+from transformers import AutoModelForImageTextToText, AutoProcessor
+
 from ikomia import core, dataprocess, utils
+from ikomia.dataprocess.io.datadictIO import DataDictIO
 
 from qwen_vl_utils import process_vision_info
-from transformers import AutoModelForImageTextToText, AutoProcessor
 
 
 # --------------------
@@ -46,19 +49,19 @@ class InferQwen3VlParam(core.CWorkflowTaskParam):
     def get_values(self):
         # Send parameters values to Ikomia Studio or API
         # Create the specific dict structure (string container)
-        param_map = {}
-        param_map["model_name"] = str(self.model_name)
-        param_map["prompt"] = str(self.prompt)
-        param_map["system_prompt"] = str(self.system_prompt)
-        param_map["max_new_tokens"] = str(self.max_new_tokens)
-        param_map["do_sample"] = str(self.do_sample)
-        param_map["temperature"] = str(self.temperature)
-        param_map["top_p"] = str(self.top_p)
-        param_map["top_k"] = str(self.top_k)
-        param_map["repetition_penalty"] = str(self.repetition_penalty)
-        param_map["cuda"] = str(self.cuda)
+        param_map = {
+            "model_name": str(self.model_name),
+            "prompt": str(self.prompt),
+            "system_prompt": str(self.system_prompt),
+            "max_new_tokens": str(self.max_new_tokens),
+            "do_sample": str(self.do_sample),
+            "temperature": str(self.temperature),
+            "top_p": str(self.top_p),
+            "top_k": str(self.top_k),
+            "repetition_penalty": str(self.repetition_penalty),
+            "cuda": str(self.cuda)
+        }
         return param_map
-
 
 
 # --------------------
@@ -69,7 +72,7 @@ class InferQwen3Vl(dataprocess.C2dImageTask):
 
     def __init__(self, name, param):
         dataprocess.C2dImageTask.__init__(self, name)
-        self.add_output(dataprocess.DataDictIO())
+        self.add_output(DataDictIO())
         # Create parameters object
         if param is None:
             self.set_param_object(InferQwen3VlParam())
@@ -84,7 +87,6 @@ class InferQwen3Vl(dataprocess.C2dImageTask):
         self.base_dir = os.path.dirname(os.path.realpath(__file__))
         self.model_folder = os.path.join(self.base_dir, "weights")
         self.device = torch.device("cpu")
-
 
     def get_progress_steps(self):
         # Function returning the number of progress steps for this algorithm
@@ -220,7 +222,7 @@ class InferQwen3VlFactory(dataprocess.CTaskFactory):
         self.info.short_description = "Run vision-language model series based on Qwen3"
         # relative path -> as displayed in Ikomia Studio algorithm tree
         self.info.path = "Plugins/Python/VLM"
-        self.info.version = "1.0.1"
+        self.info.version = "1.1.0"
         self.info.icon_path = "images/icon.png"
         self.info.authors = "Qwen team"
         self.info.article = "Qwen3 Technical Report"
@@ -229,7 +231,7 @@ class InferQwen3VlFactory(dataprocess.CTaskFactory):
         self.info.license = "Apache 2.0"
 
         # Ikomia API compatibility
-        self.info.min_ikomia_version = "0.14.0"
+        self.info.min_ikomia_version = "0.16.0"
 
         # Python compatibility
         self.info.min_python_version = "3.11.0"

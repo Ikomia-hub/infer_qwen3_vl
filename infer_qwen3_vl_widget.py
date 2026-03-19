@@ -1,10 +1,12 @@
+# PyQt GUI framework
+from PyQt6.QtWidgets import *
+
 from torch.cuda import is_available
+
 from ikomia import core, dataprocess
 from ikomia.utils import pyqtutils, qtconversion
-from infer_qwen3_vl.infer_qwen3_vl_process import InferQwen3VlParam
 
-# PyQt GUI framework
-from PyQt5.QtWidgets import *
+from infer_qwen3_vl.infer_qwen3_vl_process import InferQwen3VlParam
 
 
 # --------------------
